@@ -43,6 +43,9 @@ public class LinearProbingHashST<Key, Value> {
             st.put(key, i);
         }*/
 
+        System.out.println("size: " + st.size());
+        System.out.println("check: " + st.check());
+
         st.put("B", 1);
         st.put("C", 2);
         st.put("A", 0);
@@ -53,21 +56,29 @@ public class LinearProbingHashST<Key, Value> {
         st.put("H", 7);
 
         // print keys
+        System.out.println("size: " + st.size());
+        System.out.println("check: " + st.check());
         StdOut.println(st);
 
         st.put("D", 10);
 
         // print keys
+        System.out.println("size: " + st.size());
+        System.out.println("check: " + st.check());
         StdOut.println(st);
 
         st.delete("D");
 
         // print keys
+        System.out.println("size: " + st.size());
+        System.out.println("check: " + st.check());
         StdOut.println(st);
 
         st.put("D", 3);
 
         // print keys
+        System.out.println("size: " + st.size());
+        System.out.println("check: " + st.check());
         StdOut.println(st);
     }
 
@@ -76,10 +87,13 @@ public class LinearProbingHashST<Key, Value> {
         StringBuilder string = new StringBuilder();
         // print keys
         for (Key s : this.keys()) {
-            string.append(s);
-            string.append(" ");
-            string.append(this.get(s));
-            string.append("\n");
+            Value val = this.get(s);
+            if (null != val) {
+                string.append(s);
+                string.append(" ");
+                string.append(this.get(s));
+                string.append("\n");
+            }
         }
 
         return string.toString();
@@ -127,7 +141,11 @@ public class LinearProbingHashST<Key, Value> {
         LinearProbingHashST<Key, Value> temp = new LinearProbingHashST<Key, Value>(capacity);
         for (int i = 0; i < m; i++) {
             if (keys[i] != null) {
-                temp.put(keys[i], vals[i]);
+                if (vals[i] == null) {
+                    keys[i] = null;
+                } else {
+                    temp.put(keys[i], vals[i]);
+                }
             }
         }
         keys = temp.keys;
@@ -159,6 +177,9 @@ public class LinearProbingHashST<Key, Value> {
         int i;
         for (i = hash(key); keys[i] != null; i = (i + 1) % m) {
             if (keys[i].equals(key)) {
+                if (null == vals[i]) {
+                    ++n;
+                }
                 vals[i] = val;
                 return;
             }
@@ -177,10 +198,14 @@ public class LinearProbingHashST<Key, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public Value get(Key key) {
-        if (key == null) throw new IllegalArgumentException("argument to get() is null");
-        for (int i = hash(key); keys[i] != null; i = (i + 1) % m)
-            if (keys[i].equals(key))
+        if (key == null) {
+            throw new IllegalArgumentException("argument to get() is null");
+        }
+        for (int i = hash(key); keys[i] != null; i = (i + 1) % m) {
+            if (null != keys[i] && keys[i].equals(key)) {
                 return vals[i];
+            }
+        }
         return null;
     }
 
@@ -191,40 +216,6 @@ public class LinearProbingHashST<Key, Value> {
      * @param key the key
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
-    /*public void delete(Key key) {
-        if (key == null) throw new IllegalArgumentException("argument to delete() is null");
-        if (!contains(key)) return;
-
-        // find position i of key
-        int i = hash(key);
-        while (!key.equals(keys[i])) {
-            i = (i + 1) % m;
-        }
-
-        // delete key and associated value
-        keys[i] = null;
-        vals[i] = null;
-
-        // rehash all keys in same cluster
-        i = (i + 1) % m;
-        while (keys[i] != null) {
-            // delete keys[i] an vals[i] and reinsert
-            Key keyToRehash = keys[i];
-            Value valToRehash = vals[i];
-            keys[i] = null;
-            vals[i] = null;
-            n--;
-            put(keyToRehash, valToRehash);
-            i = (i + 1) % m;
-        }
-
-        n--;
-
-        // halves size of array if it's 12.5% full or less
-        if (n > 0 && n <= m / 8) resize(m / 2);
-
-        assert check();
-    }*/
     public void delete(Key key) {
         if (key == null) throw new IllegalArgumentException("argument to delete() is null");
         if (!contains(key)) return;
@@ -267,7 +258,7 @@ public class LinearProbingHashST<Key, Value> {
      * @return all keys in this symbol table
      */
     public Iterable<Key> keys() {
-        Queue<Key> queue = new Queue<Key>();
+        Queue<Key> queue = new Queue<>();
         for (int i = 0; i < m; i++)
             if (keys[i] != null) queue.enqueue(keys[i]);
         return queue;
