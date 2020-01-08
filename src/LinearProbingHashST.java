@@ -10,7 +10,7 @@ public class LinearProbingHashST<Key, Value> {
     private int m;           // size of linear probing table
     private Key[] keys;      // the keys
     private Value[] vals;    // the values
-
+    private int _invalidKeysCount = 0;
 
     /**
      * Initializes an empty symbol table.
@@ -151,6 +151,7 @@ public class LinearProbingHashST<Key, Value> {
         keys = temp.keys;
         vals = temp.vals;
         m = temp.m;
+        this._invalidKeysCount = 0;
     }
 
     /**
@@ -179,6 +180,7 @@ public class LinearProbingHashST<Key, Value> {
             if (keys[i].equals(key)) {
                 if (null == vals[i]) {
                     ++n;
+                    this._invalidKeysCount--;
                 }
                 vals[i] = val;
                 return;
@@ -228,6 +230,7 @@ public class LinearProbingHashST<Key, Value> {
 
         // delete value but do not the key
         vals[i] = null;
+        this._invalidKeysCount += 1;
 
         // rehash all keys in same cluster
         i = (i + 1) % m;
@@ -245,7 +248,11 @@ public class LinearProbingHashST<Key, Value> {
         n--;
 
         // halves size of array if it's 12.5% full or less
-        if (n > 0 && n <= m / 8) resize(m / 2);
+        if (n > 0 && n <= m / 8) {
+            resize(m / 2);
+        } else if (this._invalidKeysCount > m / 2) {
+            this.resize(m);
+        }
 
         assert check();
     }
