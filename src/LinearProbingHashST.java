@@ -1,8 +1,9 @@
-//import edu.princeton.cs.algs4.LinearProbingHashST;
-
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdOut;
 
+/**
+ * 4.3
+ */
 public class LinearProbingHashST<Key, Value> {
     private static final int INIT_CAPACITY = 4;
 
@@ -140,12 +141,8 @@ public class LinearProbingHashST<Key, Value> {
     private void resize(int capacity) {
         LinearProbingHashST<Key, Value> temp = new LinearProbingHashST<Key, Value>(capacity);
         for (int i = 0; i < m; i++) {
-            if (keys[i] != null) {
-                if (vals[i] == null) {
-                    keys[i] = null;
-                } else {
-                    temp.put(keys[i], vals[i]);
-                }
+            if (keys[i] != null && vals[i] != null) {
+                temp.put(keys[i], vals[i]);
             }
         }
         keys = temp.keys;

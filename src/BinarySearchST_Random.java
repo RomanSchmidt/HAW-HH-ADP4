@@ -3,6 +3,9 @@ import edu.princeton.cs.algs4.Queue;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/**
+ * 4.6
+ */
 public class BinarySearchST_Random<Key extends Comparable<Key>, Value> {
     private static final int INIT_CAPACITY = 2;
     private Key[] keys;

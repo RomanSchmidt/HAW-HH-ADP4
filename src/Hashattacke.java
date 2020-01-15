@@ -1,3 +1,6 @@
+/**
+ * 4.5
+ */
 public class Hashattacke {
     private static final int n = 5;
     private static final int size = (int) Math.pow(2, n);
@@ -61,7 +64,7 @@ public class Hashattacke {
         }
         if (currentChar == firstCharType) {
             if (currentPosOfCharArray <= 1) {
-                throw new Exception("WTF! out of bounce!");
+                throw new Exception("WTF! out of bounds!");
             }
             Hashattacke._setNewCharAt(currentPosOfCharArray - 2, chars, Hashattacke._getCharType(chars, currentPosOfCharArray - 2));
         }
