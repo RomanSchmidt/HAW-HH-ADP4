@@ -229,26 +229,11 @@ public class LinearProbingHashST<Key, Value> {
         vals[i] = null;
         this._invalidKeysCount += 1;
 
-        // rehash all keys in same cluster
-        i = (i + 1) % m;
-        while (keys[i] != null) {
-            // delete keys[i] an vals[i] and reinsert
-            Key keyToRehash = keys[i];
-            Value valToRehash = vals[i];
-            keys[i] = null;
-            vals[i] = null;
-            n--;
-            put(keyToRehash, valToRehash);
-            i = (i + 1) % m;
-        }
-
         n--;
 
         // halves size of array if it's 12.5% full or less
-        if (n > 0 && n <= m / 8) {
+        if (n > 0 && n <= m / 8 || this._invalidKeysCount == m) {
             resize(m / 2);
-        } else if (this._invalidKeysCount > m / 2) {
-            this.resize(m);
         }
 
         assert check();
