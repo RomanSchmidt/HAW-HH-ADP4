@@ -75,12 +75,12 @@ public class DocumentSimilarity {
             return trigramms;
         }
         trigramms.add(word.substring(0, 3));
-        trigramms.addAll(_getTrigramms(word.substring(1)));
+        trigramms.addAll(this._getTrigramms(word.substring(1)));
         return trigramms;
     }
 
     /**
-     * euclidean distance
+     * get distance
      */
     private void _getDistance() {
         for (int i = 0; i < this._countFiles; i++) {
@@ -91,7 +91,7 @@ public class DocumentSimilarity {
     }
 
     /**
-     * get distance by document index
+     * euclidean distance by document index
      */
     private double _distanceByDocIndex(int docIndex1, int docIndex2) {
         int distance = 0;
