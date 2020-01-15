@@ -1,5 +1,8 @@
 import java.util.Arrays;
 
+/**
+ * 4.2
+ */
 public class PerfectHash {
     private static final String _string = "VERYIMPOTANS";
     private static int _currentA = 1;
@@ -46,12 +49,12 @@ public class PerfectHash {
 
     /**
      * increase a until its >= m
-     * then increase m by 1 and set a to 0
+     * then increase m by 1 and set a to 1
      */
     private static void _increase() {
         ++_currentA;
         if (_currentA >= _currentM) {
-            _currentA = 0;
+            _currentA = 1;
             ++_currentM;
         }
     }
